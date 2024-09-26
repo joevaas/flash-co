@@ -5,7 +5,7 @@ from pyrogram import Client
 from pyrogram.enums import ParseMode
 import sys
 from datetime import datetime
-from config import API_HASH, API_ID, LOGGER, BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL, CHANNEL_ID, PORT
+from config import API_HASH, API_ID, LOGGER, BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL_1, FORCE_SUB_CHANNEL_2, CHANNEL_ID, PORT
 import pyrogram.utils
 
 pyrogram.utils.MIN_CHANNEL_ID = -1009999999999
@@ -29,13 +29,26 @@ class Bot(Client):
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
 
-        if FORCE_SUB_CHANNEL:
+        if FORCE_SUB_CHANNEL_1:
             try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
+                link = (await self.get_chat(FORCE_SUB_CHANNEL_1)).invite_link
                 if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
+                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL_1)
+                    link = (await self.get_chat(FORCE_SUB_CHANNEL_1)).invite_link
                 self.invitelink = link
+            except Exception as a:
+                self.LOGGER(__name__).warning(a)
+                self.LOGGER(__name__).warning("Bot Can't Export Invite link From Force Sub Channel!")
+                self.LOGGER(__name__).warning(f"Please Double Check The FORCE_SUB_CHANNEL Value And Make Sure Bot Is Admin In Channel With Invite Users Via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL}")
+                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/MadflixBots_Support For Support")
+                sys.exit()
+        if FORCE_SUB_CHANNEL_2:
+            try:
+                link = (await self.get_chat(FORCE_SUB_CHANNEL_2)).invite_link
+                if not link:
+                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL_2)
+                    link = (await self.get_chat(FORCE_SUB_CHANNEL_2)).invite_link
+                self.invitelink2 = link
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot Can't Export Invite link From Force Sub Channel!")
