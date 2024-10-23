@@ -11,7 +11,7 @@ from pyrogram.errors import FloodWait
 
 
 async def is_subscribed(filter, client, update):
-    if not FORCE_SUB_CHANNEL_1 or FORCE_SUB_CHANNEL_2:
+    if not (FORCE_SUB_CHANNEL_1 or FORCE_SUB_CHANNEL_2):
         return True
 
     user_id = update.from_user.id
